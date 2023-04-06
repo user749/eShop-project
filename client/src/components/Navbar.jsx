@@ -15,6 +15,7 @@ import {
 import { Link as ReactLink } from "react-router-dom";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { GiEdgedShield } from "react-icons/gi";
+import { useState } from "react";
 
 const links = [
   { linkName: "Products", path: "/products" },
@@ -40,6 +41,7 @@ const NavLink = ({ path, children }) => (
 export const Navbar = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  const [isHovering, setIsHovering] = useState(false);
 
   return (
     <Box bg={useColorModeValue("grey.100", "grey.900")} px={4}>
@@ -52,9 +54,20 @@ export const Navbar = () => {
         />
 
         <HStack>
-          <Link as={ReactLink} to={"/"}>
+          <Link
+            as={ReactLink}
+            to={"/"}
+            style={{ textDecoration: "none" }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             <Flex alignItems={"center"}>
-              <Icon as={GiEdgedShield} h={6} w={6} color={"green.400"} />
+              <Icon
+                as={GiEdgedShield}
+                h={6}
+                w={6}
+                color={isHovering ? "cyan.400" : "orange.400"}
+              />
               <Text fontWeight={"extrabold"}>E-Shop</Text>
             </Flex>
           </Link>
