@@ -44,6 +44,7 @@ export const ProfileScreen = () => {
         status: "success",
         isClosable: true,
       });
+      dispatch(resetUpdateSuccess());
     }
   }, [toast, updateSuccess]);
 
@@ -72,7 +73,6 @@ export const ProfileScreen = () => {
         {
           /* we want to turn updatesuccess to false, so we have trigger enabled when something is updated*/
         }
-        dispatch(resetUpdateSuccess());
         dispatch(
           updateProfile(
             userInfo._id,
