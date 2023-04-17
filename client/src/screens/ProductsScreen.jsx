@@ -1,20 +1,20 @@
 import {
-  Spinner,
   Center,
-  Stack,
   Wrap,
   WrapItem,
+  Spinner,
+  Stack,
   Alert,
   AlertIcon,
-  AlertTitle,
   AlertDescription,
+  AlertTitle,
 } from "@chakra-ui/react";
-import { ProductCard } from "../components/ProductCard";
+import ProductCard from "../components/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../redux/actions/productAction";
+import { getProducts } from "../redux/actions/productActions";
 import { useEffect } from "react";
 
-export const ProductsScreen = () => {
+const ProductsScreen = () => {
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.products);
@@ -25,28 +25,28 @@ export const ProductsScreen = () => {
   }, [dispatch]);
 
   return (
-    <Wrap spacing={"30px"} justify={"center"} minHeight={"100vh"}>
+    <Wrap spacing="30px" justify="center" minHeight="100vh">
       {loading ? (
-        <Stack direction={"row"} spacing={4}>
+        <Stack direction="row" spacing={4}>
           <Spinner
             mt={20}
-            thickness={"2px"}
-            speed={"0.65s"}
-            emptyColor={"gray.200"}
-            color={"orange.500"}
-            size={"xl"}
+            thickness="2px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="orange.500"
+            size="xl"
           />
         </Stack>
       ) : error ? (
-        <Alert status={"error"}>
+        <Alert status="error">
           <AlertIcon />
-          <AlertTitle>Upps!</AlertTitle>
+          <AlertTitle>We are sorry!</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       ) : (
         products.map((product) => (
           <WrapItem key={product._id}>
-            <Center w={"250px"} h={"550px"}>
+            <Center w="250px" h="550px">
               <ProductCard product={product} />
             </Center>
           </WrapItem>
@@ -55,3 +55,5 @@ export const ProductsScreen = () => {
     </Wrap>
   );
 };
+
+export default ProductsScreen;

@@ -4,6 +4,8 @@ import {
   setError,
   cartItemAdd,
   cartItemRemoval,
+  setExpressShipping,
+  clearCart,
 } from "../slices/cart";
 
 export const addCartItem = (id, qty) => async (dispatch) => {
@@ -35,4 +37,12 @@ export const addCartItem = (id, qty) => async (dispatch) => {
 export const removeCartItem = (id) => async (dispatch) => {
   dispatch(setLoading(true));
   dispatch(cartItemRemoval(id));
+};
+
+export const setExpress = (value) => async (dispatch) => {
+  dispatch(setExpressShipping(value));
+};
+
+export const resetCart = () => (dispatch) => {
+  dispatch(clearCart());
 };

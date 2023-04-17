@@ -1,4 +1,4 @@
-//connection to our database
+// connection to our database.
 import mongoose from "mongoose";
 
 const connectToDatabase = async () => {
@@ -11,7 +11,7 @@ const connectToDatabase = async () => {
 
     console.log(`MongoDB Connected: ${connect.connection.host}`);
   } catch (error) {
-    console.log(`Error: ${error}`);
+    console.log(`Error: ${error.message}`);
   }
 };
 

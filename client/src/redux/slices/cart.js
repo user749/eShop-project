@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const calculateSubtotal = (cartState) => {
   let result = 0;
   cartState.map((item) => (result += item.qty * item.price));
-  return Number(result.toFixed(2));
+  return Number(result).toFixed(2);
 };
 
 export const initialState = {
   loading: false,
   error: null,
   cart: JSON.parse(localStorage.getItem("cartItems")) ?? [],
-  expressShipping: false,
+  expressShipping: JSON.parse(localStorage.getItem("expressShipping")) ?? false,
   subtotal: localStorage.getItem("cartItems")
     ? calculateSubtotal(JSON.parse(localStorage.getItem("cartItems")))
     : 0,
@@ -38,7 +38,6 @@ export const cartSlice = createSlice({
       } else {
         state.cart = [...state.cart, payload];
       }
-
       state.loading = false;
       state.error = null;
       updateLocalStorage(state.cart);
@@ -55,11 +54,25 @@ export const cartSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setExpressShipping: (state, { payload }) => {
+      state.expressShipping = payload;
+      localStorage.setItem("expressShipping", payload);
+    },
+    clearCart: (state) => {
+      localStorage.removeItem("cartItems");
+      state.cart = [];
+    },
   },
 });
 
-export const { setLoading, setError, cartItemAdd, cartItemRemoval } =
-  cartSlice.actions;
+export const {
+  setLoading,
+  setError,
+  cartItemAdd,
+  cartItemRemoval,
+  setExpressShipping,
+  clearCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const cartSelector = (state) => state.cart;

@@ -55,7 +55,7 @@ const Rating = ({ rating, numberOfReviews }) => {
   );
 };
 
-export const ProductCard = ({ product }) => {
+const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const cartInfo = useSelector((state) => state.cart);
@@ -168,3 +168,5 @@ export const ProductCard = ({ product }) => {
     </Stack>
   );
 };
+
+export default ProductCard;

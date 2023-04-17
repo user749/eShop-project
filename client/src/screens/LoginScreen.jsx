@@ -1,33 +1,34 @@
 import {
   Box,
-  Container,
-  HStack,
-  Heading,
-  Stack,
-  useBreakpointValue,
-  Alert,
-  AlertTitle,
-  AlertIcon,
-  AlertDescription,
-  FormControl,
   Button,
-  useToast,
+  Checkbox,
+  Container,
+  FormControl,
+  Heading,
+  HStack,
+  Stack,
   Text,
+  useBreakpointValue,
+  useColorModeValue,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  useToast,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link as ReactLink, useLocation } from "react-router-dom";
-import TextField from "../components/TextField";
 import PasswordTextField from "../components/PasswordTextField";
+import TextField from "../components/TextField";
 import { login } from "../redux/actions/userActions";
 
-// Todo redifine password
-export const LoginScreen = () => {
+//TODO: redefine password length
+const LoginScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const dispatch = useDispatch();
   const redirect = "/products";
   const toast = useToast();
@@ -35,7 +36,7 @@ export const LoginScreen = () => {
   const user = useSelector((state) => state.user);
   const { loading, error, userInfo } = user;
 
-  const HeadingBR = useBreakpointValue({ base: "xs", md: "sm" });
+  const headingBR = useBreakpointValue({ base: "xs", md: "sm" });
   const boxBR = useBreakpointValue({ base: "transparent", md: "bg-surface" });
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export const LoginScreen = () => {
         navigate(redirect);
       }
       toast({
-        description: "Login successful:",
+        description: "Login successful.",
         status: "success",
         isClosable: true,
       });
@@ -58,39 +59,38 @@ export const LoginScreen = () => {
       initialValues={{ email: "", password: "" }}
       validationSchema={Yup.object({
         email: Yup.string()
-          .email("invalid email.")
+          .email("Invalid email.")
           .required("An email address is required."),
         password: Yup.string()
-          .min(1, "Password is too short. Must contain at least 1 char")
-          .required("password is required"),
+          .min(1, "Password is too short - must contain at least 1 character.")
+          .required("Password is required."),
       })}
       onSubmit={(values) => {
         dispatch(login(values.email, values.password));
       }}
     >
-      {(Formik) => (
+      {(formik) => (
         <Container
-          maxW={"lg"}
+          maxW="lg"
           py={{ base: "12", md: "24" }}
           px={{ base: "0", md: "8" }}
-          minH={"4xl"}
+          minH="4xl"
         >
-          <Stack spacing={8}>
-            <Stack spacing={6}>
-              <Stack spacing={{ base: "2", md: "3" }} textAlign={"center"}>
-                <Heading size={HeadingBR}>Log in to your account</Heading>{" "}
-                <HStack spacing={1} justify={"center"}>
-                  <Text color={"muted"}>Don't have an account?</Text>
+          <Stack spacing="8">
+            <Stack spacing="6">
+              <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
+                <Heading size={headingBR}>Log in to your account</Heading>
+                <HStack spacing="1" justify="center">
+                  <Text color="muted">Don't have an account ?</Text>
                   <Button
                     as={ReactLink}
-                    to={"/registration"}
-                    variant={"link"}
-                    colorScheme={"orange"}
+                    to="/registration"
+                    variant="link"
+                    colorScheme="orange"
                   >
-                    Sign Up
+                    Sign up
                   </Button>
                 </HStack>
-                {/* We have to use heading br because of formik*/}
               </Stack>
             </Stack>
             <Box
@@ -99,45 +99,45 @@ export const LoginScreen = () => {
               bg={{ boxBR }}
               boxShadow={{ base: "none", md: "xl" }}
             >
-              <Stack spacing={6} as={"form"} onSubmit={Formik.handleSubmit}>
+              <Stack spacing="6" as="form" onSubmit={formik.handleSubmit}>
                 {error && (
                   <Alert
-                    status={"error"}
-                    flexDirection={"column"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    textAlign={"center"}
+                    status="error"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    textAlign="center"
                   >
                     <AlertIcon />
-                    <AlertTitle>Upps!</AlertTitle>
+                    <AlertTitle>We are sorry!</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
-                <Stack spacing={5}>
+                <Stack spacing="5">
                   <FormControl>
                     <TextField
-                      type={"text"}
-                      name={"email"}
-                      placeholder={"You@gmail.com"}
-                      label={"Email"}
+                      type="text"
+                      name="email"
+                      placeholder="you@example.com"
+                      label="Email"
                     />
                     <PasswordTextField
-                      type={"password"}
-                      name={"password"}
-                      placeholder={"your password"}
-                      label={"Password"}
+                      type="password"
+                      name="password"
+                      placeholder="your password"
+                      label="Password"
                     />
                   </FormControl>
                 </Stack>
-                <Stack spacing={6}>
+                <Stack spacing="6">
                   <Button
-                    colorScheme={"orange"}
-                    size={"lg"}
-                    fontSize={"md"}
+                    colorScheme="orange"
+                    size="lg"
+                    fontSize="md"
                     isLoading={loading}
-                    type={"submit"}
+                    type="submit"
                   >
-                    Sign In
+                    Sign in
                   </Button>
                 </Stack>
               </Stack>
@@ -148,3 +148,5 @@ export const LoginScreen = () => {
     </Formik>
   );
 };
+
+export default LoginScreen;

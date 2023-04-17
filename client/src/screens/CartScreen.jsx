@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { CartItem } from "../components/CartItem";
-import { CartOrderSummary } from "../components/CartOrderSummary";
+import CartItem from "../components/CartItem";
+import CartOrderSummary from "../components/CartOrderSummary";
 
-export const CartScreen = () => {
+const CartScreen = () => {
   const cartInfo = useSelector((state) => state.cart);
   const { loading, error, cart } = cartInfo;
 
@@ -97,3 +97,5 @@ export const CartScreen = () => {
     </Wrap>
   );
 };
+
+export default CartScreen;

@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import {
   setLoading,
   setError,
@@ -7,6 +6,7 @@ import {
   userLogout,
   updateUserProfile,
   resetUpdate,
+  setUserOrders,
 } from "../slices/user";
 
 export const login = (email, password) => async (dispatch) => {
@@ -17,6 +17,7 @@ export const login = (email, password) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
+
     const { data } = await axios.post(
       "/api/users/login",
       { email, password },
@@ -27,11 +28,11 @@ export const login = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch(
       setError(
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message
           ? error.message
-          : "an unexepcted error has occured, pls try again later"
+          : "An unexpected error has occured. Please try again later."
       )
     );
   }
@@ -56,17 +57,16 @@ export const register = (name, email, password) => async (dispatch) => {
       { name, email, password },
       config
     );
-
     dispatch(userLogin(data));
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch(
       setError(
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message
           ? error.message
-          : "an unexepcted error has occured, pls try again later"
+          : "An unexpected error has occured. Please try again later."
       )
     );
   }
@@ -87,12 +87,7 @@ export const updateProfile =
       };
       const { data } = await axios.put(
         `/api/users/profile/${id}`,
-        {
-          _id: id,
-          name,
-          email,
-          password,
-        },
+        { _id: id, name, email, password },
         config
       );
       localStorage.setItem("userInfo", JSON.stringify(data));
@@ -100,11 +95,11 @@ export const updateProfile =
     } catch (error) {
       dispatch(
         setError(
-          error.response && error.response.data.message
-            ? error.response.data.message
+          error.response && error.response.data
+            ? error.response.data
             : error.message
             ? error.message
-            : "an unexepcted error has occured, pls try again later"
+            : "An unexpected error has occured. Please try again later."
         )
       );
     }
@@ -112,4 +107,32 @@ export const updateProfile =
 
 export const resetUpdateSuccess = () => async (dispatch) => {
   dispatch(resetUpdate());
+};
+
+export const getUserOrders = () => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  const {
+    user: { userInfo },
+  } = getState();
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.get(`/api/users/${userInfo._id}`, config);
+    dispatch(setUserOrders(data));
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data
+          ? error.response.data
+          : error.message
+          ? error.message
+          : "An unexpected error has occured. Please try again later."
+      )
+    );
+  }
 };
